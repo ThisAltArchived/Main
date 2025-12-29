@@ -1,0 +1,163 @@
+local repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/"
+local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
+local SaveManager = loadstring(game:HttpGet(repo .. "addons/SaveManager.lua"))()
+local ThemeManager = loadstring(game:HttpGet(repo .. "addons/ThemeManager.lua"))()
+
+ -- register the library so ThemeManager can manipulate controls
+ThemeManager:SetLibrary(Library)
+ 
+-- optional: keep themes inside a custom folder
+ThemeManager:SetFolder("DebugConfig")
+
+local Labels = Library.Labels
+local Buttons = Library.Buttons
+local Options = Library.Options
+local Toggles = Library.Toggles
+
+local Window = Library:CreateWindow({
+    Title = "Debugger",
+    Footer = "Version: 1",
+    Icon = 0,
+    NotifySide = "Right",
+})
+local Tab0 = Window:AddTab("Function Debug")
+
+local LeftGroupBox = Tab0:AddLeftGroupbox("Left Groupbox")
+local RightGroupBox = Tab0:AddRightGroupbox("Right GroupBox")
+
+LeftGroupBox:AddInput("Input0", {
+	Default = "",
+	Numeric = false, -- true / false, only allows numbers
+	Finished = false, -- true / false, only calls callback when you press enter
+	ClearTextOnFocus = false, -- true / false, if false the text will not clear when textbox focused
+ 
+	Text = "Put Function Name",
+	Tooltip = "Press Print All Function Name Slow (Recommended) For Spectating/Viewing every function", -- Information shown when you hover over the textbox
+ 
+	Placeholder = "Function Name", -- placeholder text when the box is empty
+	-- MaxLength is also an option which is the max length of the text
+})
+LeftGroupBox:AddInput("Input2", {
+	Default = "",
+	Numeric = false, -- true / false, only allows numbers
+	Finished = false, -- true / false, only calls callback when you press enter
+	ClearTextOnFocus = false, -- true / false, if false the text will not clear when textbox focused
+ 
+	Text = "Put Function Hash",
+	Tooltip = "Put Function Hash If The Function Has No Name i Recommend using getfunctionhash on some localscript or modulescript and use setclipboard", -- Information shown when you hover over the textbox
+ 
+	Placeholder = "Function Hash", -- placeholder text when the box is empty
+	-- MaxLength is also an option which is the max length of the text
+})
+LeftGroupBox:AddInput("Input1", {
+	Default = "",
+	Numeric = false, -- true / false, only allows numbers
+	Finished = false, -- true / false, only calls callback when you press enter
+	ClearTextOnFocus = false, -- true / false, if false the text will not clear when textbox focused
+ 
+	Text = "Put Function Arguments",
+	Tooltip = "Put Function Arguments If The Function Has Arguments i Recommend using cobalt spy", -- Information shown when you hover over the textbox
+ 
+	Placeholder = "Function Arguments", -- placeholder text when the box is empty
+	-- MaxLength is also an option which is the max length of the text
+})
+LeftGroupBox:AddButton({
+    Text = "Print All Function Name (Slow)",
+    Func = function()
+for i,v in next, getgc(true) do
+if type(v) == "function" then
+local n = debug.info(v, "n")
+print(n)
+wait(0.2)
+end
+end
+    end
+})
+LeftGroupBox:AddButton({
+    Text = "Print All Function Name (Fast)",
+    Func = function()
+for i,v in next, getgc(true) do
+if type(v) == "function" then
+local n = debug.info(v, "n")
+print(n)
+end
+end
+    end
+})
+
+RightGroupBox:AddButton({
+    Text = "Hook Function To Nil",
+    Func = function()
+for i,v in next, getgc(true) do
+if type(v) == "function" then
+local n = debug.info(v, "n")
+local hash = getfunctionhash(v)
+if n == Options.Input0.Value or hash == Options.Input1.Value then
+hookfunction(v, function()
+return nil
+end)
+end
+end
+end
+    end
+})
+
+RightGroupBox:AddButton({
+    Text = "Restore Function",
+    Func = function()
+for i,v in next, getgc(true) do
+if type(v) == "function" then
+local n = debug.info(v, "n")
+local hash = getfunctionhash(v)
+if n == Options.Input0.Value or hash == Options.Input1.Value then
+restorefunction(v)
+end
+end
+end
+    end
+})
+
+RightGroupBox:AddButton({
+    Text = "Get Constant From Function",
+    Func = function()
+for i,v in next, getgc(true) do
+if type(v) == "function" then
+local n = debug.info(v, "n")
+local hash = getfunctionhash(v)
+if n == Options.Input0.Value or hash == Options.Input1.Value then
+local con = debug.getconstants(v, "n")
+print(unpack(con))
+end
+end
+end
+    end
+})
+
+RightGroupBox:AddButton({
+    Text = "Call Function (Might Crash)",
+    Func = function()
+for i,v in next, getgc(true) do
+if type(v) == "function" then
+local n = debug.info(v, "n")
+local hash = getfunctionhash(v)
+if n == Options.Input0.Value or hash == Options.Input1.Value then
+v()
+end
+end
+end
+    end
+})
+RightGroupBox:AddButton({
+    Text = "Call Function With Arguments (Might Crash)",
+    Func = function()
+for i,v in next, getgc(true) do
+if type(v) == "function" then
+local n = debug.info(v, "n")
+local hash = getfunctionhash(v)
+if n == Options.Input0.Value or hash == Options.Input1.Value then
+v(Options.Input2.Value)
+end
+end
+end
+    end
+})
