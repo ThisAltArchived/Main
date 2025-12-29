@@ -21,9 +21,12 @@ local Window = Library:CreateWindow({
     NotifySide = "Right",
 })
 local Tab0 = Window:AddTab("Function Debug")
+local Tab1 = Window:AddTab("Coming Soon")
 
-local LeftGroupBox = Tab0:AddLeftGroupbox("Left Groupbox")
-local RightGroupBox = Tab0:AddRightGroupbox("Right GroupBox")
+local LeftGroupBox = Tab0:AddLeftGroupbox("Functions Left Group")
+local RightGroupBox = Tab0:AddRightGroupbox("Functions Right Group")
+local LeftGroupBox1 = Tab1:AddLeftGroupbox("Upvalues Left Group")
+local RightGroupBox1 = Tab1:AddRightGroupbox("Upvalues Right Group")
 
 LeftGroupBox:AddInput("Input0", {
 	Default = "",
@@ -31,10 +34,10 @@ LeftGroupBox:AddInput("Input0", {
 	Finished = false, -- true / false, only calls callback when you press enter
 	ClearTextOnFocus = false, -- true / false, if false the text will not clear when textbox focused
  
-	Text = "Available Options: Hash And Name",
-	Tooltip = "Press Print All Function Name Slow (Recommended) For Spectating/Viewing every function or print the hash or set it to clipboard by doing it on modulescript or local script", -- Information shown when you hover over the textbox
+	Text = "Available Options: Hash, Name and address",
+	Tooltip = "Press Print All Function Name Slow (Recommended) For Spectating/Viewing every function or print the hash or set it to clipboard by doing it on modulescript or local script or use cobalt for getting the address of function on a remote", -- Information shown when you hover over the textbox
  
-	Placeholder = "Function Name", -- placeholder text when the box is empty
+	Placeholder = "Function Type", -- placeholder text when the box is empty
 	-- MaxLength is also an option which is the max length of the text
 })
 LeftGroupBox:AddInput("Input1", {
@@ -80,7 +83,7 @@ for i,v in next, getgc(true) do
 if type(v) == "function" then
 local n = debug.info(v, "n")
 local hash = getfunctionhash(v)
-if n == Options.Input0.Value or hash == Options.Input0.Value then
+if n == Options.Input0.Value or hash == Options.Input0.Value or v = Options.Input0.Value then
 hookfunction(v, function()
 return nil
 end)
@@ -97,7 +100,7 @@ for i,v in next, getgc(true) do
 if type(v) == "function" then
 local n = debug.info(v, "n")
 local hash = getfunctionhash(v)
-if n == Options.Input0.Value or hash == Options.Input0.Value then
+if n == Options.Input0.Value or hash == Options.Input0.Value or v = Options.Input0.Value then
 restorefunction(v)
 end
 end
@@ -112,7 +115,7 @@ for i,v in next, getgc(true) do
 if type(v) == "function" then
 local n = debug.info(v, "n")
 local hash = getfunctionhash(v)
-if n == Options.Input0.Value or hash == Options.Input0.Value then
+if n == Options.Input0.Value or hash == Options.Input0.Value or v = Options.Input0.Value then
 local con = debug.getconstants(v, "n")
 print(unpack(con))
 end
@@ -128,7 +131,7 @@ for i,v in next, getgc(true) do
 if type(v) == "function" then
 local n = debug.info(v, "n")
 local hash = getfunctionhash(v)
-if n == Options.Input0.Value or hash == Options.Input0.Value then
+if n == Options.Input0.Value or hash == Options.Input0.Value or v = Options.Input0.Value then
 v()
 end
 end
@@ -142,7 +145,7 @@ for i,v in next, getgc(true) do
 if type(v) == "function" then
 local n = debug.info(v, "n")
 local hash = getfunctionhash(v)
-if n == Options.Input0.Value or hash == Options.Input0.Value then
+if n == Options.Input0.Value or hash == Options.Input0.Value or v = Options.Input0.Value then
 v(Options.Input1.Value)
 end
 end
