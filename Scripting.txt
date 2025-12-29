@@ -15,12 +15,12 @@ local Options = Library.Options
 local Toggles = Library.Toggles
 
 local Window = Library:CreateWindow({
-    Title = "Debugger",
+    Title = "ThisAltArchived's Spy",
     Footer = "Version: 1",
     Icon = 0,
     NotifySide = "Right",
 })
-local Tab0 = Window:AddTab("Function Debug")
+local Tab0 = Window:AddTab("Function Spy")
 local Tab1 = Window:AddTab("Coming Soon")
 
 local LeftGroupBox = Tab0:AddLeftGroupbox("Functions Left Group")
@@ -150,3 +150,4 @@ end
 end
     end
 })
+
