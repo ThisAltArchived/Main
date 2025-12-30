@@ -1,3 +1,140 @@
+local function findfunc(scriptname, scriptClass, Option, cb)
+if cb == true then
+if scriptClass == "LocalScript" then
+for i,v in pairs(getinstances()) do
+if v:IsA("LocalScript") then
+if v.Name == scriptname then
+local senv = getsenv(v)
+if Option == "Address" then
+for i,v in next, senv do
+if type(v) == "function" then
+setclipboard(v)
+end
+end
+end
+if Option == "Hash" then
+for i,v in next, senv do
+if type(v) == "function" then
+local n = getfunctionhash(v)
+setclipboard(n)
+end
+end
+end
+if Option == "Name" then
+for i,v in next, senv do
+if type(v) == "function" then
+local n = debug.info(v, "n")
+setclipboard(n)
+end
+end
+end
+end
+end
+end
+end
+end
+
+if scriptClass == "ModuleScript" then
+for i,v in pairs(getinstances()) do
+if v:IsA("ModuleScript") then
+if v.Name == scriptname then
+local req = require(v)
+if Option == "Address" then
+for i,v in next, req do
+if type(v) == "function" then
+print(v)
+end
+end
+end
+if Option == "Hash" then
+for i,v in next, req do
+if type(v) == "function" then
+local n = getfunctionhash(v)
+print(n)
+end
+end
+end
+if Option == "Name" then
+for i,v in next, req do
+if type(v) == "function" then
+local n = debug.info(v, "n")
+print(n)
+end
+end
+end
+end
+end
+end
+end
+
+if cb == false then
+if scriptClass == "LocalScript" then
+for i,v in pairs(getinstances()) do
+if v:IsA("LocalScript") then
+if v.Name == scriptname then
+local senv = getsenv(v)
+if Option == "Address" then
+for i,v in next, senv do
+if type(v) == "function" then
+print(v)
+end
+end
+end
+if Option == "Hash" then
+for i,v in next, senv do
+if type(v) == "function" then
+local n = getfunctionhash(v)
+print(n)
+end
+end
+end
+if Option == "Name" then
+for i,v in next, senv do
+if type(v) == "function" then
+local n = debug.info(v, "n")
+print(n)
+end
+end
+end
+end
+end
+end
+end
+if scriptClass == "ModuleScript" then
+for i,v in pairs(getinstances()) do
+if v:IsA("ModuleScript") then
+if v.Name == scriptname then
+local req = require(v)
+if Option == "Address" then
+for i,v in next, req do
+if type(v) == "function" then
+print(v)
+end
+end
+end
+if Option == "Hash" then
+for i,v in next, req do
+if type(v) == "function" then
+local n = getfunctionhash(v)
+print(n)
+end
+end
+end
+if Option == "Name" then
+for i,v in next, req do
+if type(v) == "function" then
+local n = debug.info(v, "n")
+print(n)
+end
+end
+end
+end
+end
+end
+end
+end
+end
+--DONT TOUCH ABOVE
 local repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/"
 local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
 local SaveManager = loadstring(game:HttpGet(repo .. "addons/SaveManager.lua"))()
@@ -15,12 +152,12 @@ local Options = Library.Options
 local Toggles = Library.Toggles
 
 local Window = Library:CreateWindow({
-    Title = "ThisAltArchived's Spy",
+    Title = "Debugger",
     Footer = "Version: 1",
     Icon = 0,
     NotifySide = "Right",
 })
-local Tab0 = Window:AddTab("Function Spy")
+local Tab0 = Window:AddTab("Function Debug")
 local Tab1 = Window:AddTab("Coming Soon")
 
 local LeftGroupBox = Tab0:AddLeftGroupbox("Functions Left Group")
@@ -50,6 +187,47 @@ LeftGroupBox:AddInput("Input1", {
 	Placeholder = "Function Arguments", -- placeholder text when the box is empty
 	-- MaxLength is also an option which is the max length of the text
 })
+LeftGroupBox:AddInput("Input2", {
+	Default = "",
+	Numeric = false, -- true / false, only allows numbers
+	Finished = false, -- true / false, only calls callback when you press enter
+	ClearTextOnFocus = false, -- true / false, if false the text will not clear when textbox focused
+ 
+	Text = "Name Of Script",
+	Tooltip = "Put Script Name Using Dex Explorer (Recommended)", -- Information shown when you hover over the textbox
+ 
+	Placeholder = "Script Name", -- placeholder text when the box is empty
+	-- MaxLength is also an option which is the max length of the text
+})
+LeftGroupBox:AddInput("Input3", {
+	Default = "",
+	Numeric = false, -- true / false, only allows numbers
+	Finished = false, -- true / false, only calls callback when you press enter
+	ClearTextOnFocus = false, -- true / false, if false the text will not clear when textbox focused
+ 
+	Text = "Available Options: LocalScript And ModuleScript",
+	Tooltip = "Put Class Name Needed For Script ClassName Check ClassName in dex explorer or put it in the available options", -- Information shown when you hover over the textbox
+ 
+	Placeholder = "Script Class", -- placeholder text when the box is empty
+	-- MaxLength is also an option which is the max length of the text
+})
+LeftGroupBox:AddInput("Input4", {
+	Default = "",
+	Numeric = false, -- true / false, only allows numbers
+	Finished = false, -- true / false, only calls callback when you press enter
+	ClearTextOnFocus = false, -- true / false, if false the text will not clear when textbox focused
+ 
+	Text = "Available Options: Hash, Name and Address",
+	Tooltip = "Put Function Type Useful for Printing or setting it to the clipboard", -- Information shown when you hover over the textbox
+ 
+	Placeholder = "Function Type", -- placeholder text when the box is empty
+	-- MaxLength is also an option which is the max length of the text
+})
+local CBToggle = LeftGroupBox:AddToggle("CBToggle", {
+    Text = "Enable Clipboard Option",
+    Default = false,
+})
+
 LeftGroupBox:AddButton({
     Text = "Print All Function Name (Slow)",
     Func = function()
@@ -73,6 +251,12 @@ end
 end
     end
 })
+LeftGroupBox:AddButton({
+    Text = "Print Function Type",
+    Func = function()
+findfunc(tostring(Options.Input2.Value), tostring(Options.Input3.Value), tostring(Options.Input4.Value), Toggles.CBToggle.Value)
+    end
+})
 
 RightGroupBox:AddButton({
     Text = "Hook Function To Nil",
@@ -90,7 +274,22 @@ end
 end
     end
 })
-
+RightGroupBox:AddButton({
+    Text = "Hook Function To True (No Cooldown)",
+    Func = function()
+for i,v in next, getgc(true) do
+if type(v) == "function" then
+local n = debug.info(v, "n")
+local hash = getfunctionhash(v)
+if n == Options.Input0.Value or hash == Options.Input0.Value or v == Options.Input0.Value then
+hookfunction(v, function()
+return true
+end)
+end
+end
+end
+    end
+})
 RightGroupBox:AddButton({
     Text = "Restore Function",
     Func = function()
@@ -150,4 +349,3 @@ end
 end
     end
 })
-
