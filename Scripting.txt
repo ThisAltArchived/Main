@@ -227,7 +227,14 @@ local CBToggle = LeftGroupBox:AddToggle("CBToggle", {
     Text = "Enable Clipboard Option",
     Default = false,
 })
-
+local lclosureToggle = LeftGroupBox:AddToggle("lclosureToggle", {
+    Text = "Enable lclosure Method",
+    Default = false,
+})
+local cclosureToggle = LeftGroupBox:AddToggle("cclosureToggle", {
+    Text = "Enable cclosure Method",
+    Default = false,
+})
 LeftGroupBox:AddButton({
     Text = "Print All Function Name (Slow)",
     Func = function()
@@ -266,25 +273,29 @@ if type(v) == "function" then
 local n = debug.info(v, "n")
 local hash = getfunctionhash(v)
 if n == Options.Input0.Value or hash == Options.Input0.Value or v == Options.Input0.Value then
+if islclosure(v) == Toggles.lclosureToggle.Value or iscclosure(v) == Toggles.cclosureToggle.Value then
 hookfunction(v, function()
 return nil
 end)
 end
 end
 end
+end
     end
 })
 RightGroupBox:AddButton({
-    Text = "Hook Function To True (No Cooldown)",
+    Text = "Hook Function To True (Sometimes No Cooldown)",
     Func = function()
 for i,v in next, getgc(true) do
 if type(v) == "function" then
 local n = debug.info(v, "n")
 local hash = getfunctionhash(v)
 if n == Options.Input0.Value or hash == Options.Input0.Value or v == Options.Input0.Value then
+if islclosure(v) == Toggles.lclosureToggle.Value or iscclosure(v) == Toggles.cclosureToggle.Value then
 hookfunction(v, function()
 return true
 end)
+end
 end
 end
 end
@@ -298,7 +309,9 @@ if type(v) == "function" then
 local n = debug.info(v, "n")
 local hash = getfunctionhash(v)
 if n == Options.Input0.Value or hash == Options.Input0.Value or v == Options.Input0.Value then
+if islclosure(v) == Toggles.lclosureToggle.Value or iscclosure(v) == Toggles.cclosureToggle.Value then
 restorefunction(v)
+end
 end
 end
 end
@@ -329,7 +342,9 @@ if type(v) == "function" then
 local n = debug.info(v, "n")
 local hash = getfunctionhash(v)
 if n == Options.Input0.Value or hash == Options.Input0.Value or v == Options.Input0.Value then
+if islclosure(v) == Toggles.lclosureToggle.Value or iscclosure(v) == Toggles.cclosureToggle.Value then
 v()
+end
 end
 end
 end
@@ -343,7 +358,9 @@ if type(v) == "function" then
 local n = debug.info(v, "n")
 local hash = getfunctionhash(v)
 if n == Options.Input0.Value or hash == Options.Input0.Value or v == Options.Input0.Value then
+if islclosure(v) == Toggles.lclosureToggle.Value or iscclosure(v) == Toggles.cclosureToggle.Value then
 v(Options.Input1.Value)
+end
 end
 end
 end
