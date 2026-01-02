@@ -200,6 +200,13 @@ end
 end
 end
 end
+local funclib = {}
+table.insert(funclib, findfunc)
+table.insert(funclib, restorefunc)
+table.insert(funclib, hookfunc)
+table.insert(funclib, hookfunccons)
+table.insert(funclib, hookfuncupval)
+table.insert(funclib, callfunc)
 --Table And Upvalues Library
 local function rawgetnumber(numstr)
 for i,v in next, getgc(true) do
@@ -214,5 +221,4 @@ if type(v)== "table" and rawget(v, numstr) then
 rawset(v, numstr, value)
 end
 end
-
 end
